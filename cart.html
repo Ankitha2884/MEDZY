@@ -17,4 +17,59 @@
                     <li><a href="products.html">Products</a></li>
                     <li><a href="cart.html">Cart</a></li>
                     <li><a href="track-order.html">Track Order</a></li>
-                    <li><a href="login.html">
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="cart">
+        <div class="container">
+            <h2>Your Cart</h2>
+            <div id="cart-items">
+                <!-- Cart items will be displayed here dynamically -->
+            </div>
+            <div id="checkout-form">
+                <h3>Checkout</h3>
+                <form action="checkout.php" method="POST">
+                    <label for="payment">Select Payment Method:</label>
+                    <select id="payment" name="payment" required>
+                        <option value="upi">UPI</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                    </select>
+                    <label for="address">Delivery Address:</label>
+                    <textarea id="address" name="address" rows="4" required></textarea>
+                    <button type="submit">Proceed to Pay</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MEDZY. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script>
+        function displayCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItemsDiv = document.getElementById('cart-items');
+            cartItemsDiv.innerHTML = '';
+
+            cart.forEach(item => {
+                let itemDiv = document.createElement('div');
+                itemDiv.classList.add('cart-item');
+                itemDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>₹ ${item.price.toFixed(2)}</p>
+                `;
+                cartItemsDiv.appendChild(itemDiv);
+            });
+        }
+
+        // Display cart items when page loads
+        displayCart();
+    </script>
+</body>
+</html>
