@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MEDZY</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo"><a href="index.html">MEDZY</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="cart.html">Cart</a></li>
                     <li><a href="checkout.html">Checkout</a></li>
@@ -9,9 +25,8 @@
         <div class="container">
             <h2>Checkout</h2>
             <div id="checkout-details">
-                <!-- Checkout form will be added here -->
+                <!-- Cart items will be displayed here -->
             </div>
-            <button onclick="checkout()">Complete Purchase</button>
         </div>
     </section>
     <footer>
@@ -22,17 +37,6 @@
 
     <script src="scripts.js"></script>
     <script>
-        function checkout() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (cart.length === 0) {
-                alert("Your cart is empty. Please add items before proceeding to checkout.");
-                return;
-            }
-            alert(`Redirecting to payment gateway. Total amount: $${calculateTotal()}`);
-            localStorage.removeItem('cart');
-            displayCart();
-        }
-
         function displayCart() {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let checkoutDetailsDiv = document.getElementById('checkout-details');
@@ -47,15 +51,6 @@
                 `;
                 checkoutDetailsDiv.appendChild(itemDiv);
             });
-        }
-
-        function calculateTotal() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let total = 0;
-            cart.forEach(item => {
-                total += item.price;
-            });
-            return total.toFixed(2);
         }
 
         // Display cart items when page loads
