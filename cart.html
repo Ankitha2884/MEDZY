@@ -30,7 +30,7 @@
             </div>
             <div id="checkout-form">
                 <h3>Checkout</h3>
-                <form action="checkout.php" method="POST">
+                <form action="checkout.php" method="POST" onsubmit="checkout(event)">
                     <label for="payment">Select Payment Method:</label>
                     <select id="payment" name="payment" required>
                         <option value="upi">UPI</option>
@@ -66,6 +66,20 @@
                 `;
                 cartItemsDiv.appendChild(itemDiv);
             });
+        }
+
+        function checkout(event) {
+            event.preventDefault(); // Prevent form submission
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add items before proceeding to checkout.");
+                return;
+            }
+            // Perform additional checkout logic (e.g., send data to server-side script)
+            alert("Redirecting to payment gateway.");
+            localStorage.removeItem('cart'); // Clear cart after checkout
+            displayCart(); // Update cart display
+            // You can redirect or perform other actions as needed
         }
 
         // Display cart items when page loads
