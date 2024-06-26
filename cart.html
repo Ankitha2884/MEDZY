@@ -5,6 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - MEDZY</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS specific to cart.html */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            overflow: hidden;
+        }
+        .logo {
+            font-size: 24px;
+            margin: 0;
+            float: left;
+        }
+        nav {
+            float: right;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        #cart {
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        #cart h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .cart-items {
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+        .cart-item-details {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .cart-item h3 {
+            margin: 0;
+        }
+        .cart-item p {
+            margin: 0;
+            font-weight: bold;
+        }
+        #checkout-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #checkout-form h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #checkout-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #checkout-form select, #checkout-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        #checkout-form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #checkout-form button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -22,28 +152,37 @@
             </nav>
         </div>
     </header>
-    <section id="cart">
+    <div id="cart">
         <div class="container">
             <h2>Your Cart</h2>
-            <div id="cart-items">
-                <!-- Cart items will be displayed here dynamically -->
+            <div class="cart-items">
+                <!-- Example cart item (replace with dynamic items) -->
+                <div class="cart-item">
+                    <img src="product-image.jpg" alt="Product Image">
+                    <div class="cart-item-details">
+                        <h3>Product Name</h3>
+                        <p>₹ Price</p>
+                    </div>
+                </div>
+                <!-- Repeat for each item in the cart -->
             </div>
             <div id="checkout-form">
                 <h3>Checkout</h3>
                 <form action="checkout.php" method="POST" onsubmit="checkout(event)">
                     <label for="payment">Select Payment Method:</label>
                     <select id="payment" name="payment" required>
+                        <option value="">Select Payment Method</option>
                         <option value="upi">UPI</option>
                         <option value="credit_card">Credit Card</option>
                         <option value="debit_card">Debit Card</option>
                     </select>
                     <label for="address">Delivery Address:</label>
-                    <textarea id="address" name="address" rows="4" required></textarea>
+                    <textarea id="address" name="address" rows="4" placeholder="Enter your delivery address..." required></textarea>
                     <button type="submit">Proceed to Pay</button>
                 </form>
             </div>
         </div>
-    </section>
+    </div>
     <footer>
         <div class="container">
             <p>&copy; 2024 MEDZY. All rights reserved.</p>
@@ -54,31 +193,34 @@
     <script>
         function displayCart() {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cartItemsDiv = document.getElementById('cart-items');
+            let cartItemsDiv = document.querySelector('.cart-items');
             cartItemsDiv.innerHTML = '';
 
             cart.forEach(item => {
                 let itemDiv = document.createElement('div');
                 itemDiv.classList.add('cart-item');
                 itemDiv.innerHTML = `
-                    <h3>${item.name}</h3>
-                    <p>₹ ${item.price.toFixed(2)}</p>
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <h3>${item.name}</h3>
+                        <p>₹ ${item.price.toFixed(2)}</p>
+                    </div>
                 `;
                 cartItemsDiv.appendChild(itemDiv);
             });
         }
 
         function checkout(event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault();
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart.length === 0) {
                 alert("Your cart is empty. Please add items before proceeding to checkout.");
                 return;
             }
-            // Perform additional checkout logic (e.g., send data to server-side script)
+            // Additional checkout logic can go here (e.g., validation, payment processing)
             alert("Redirecting to payment gateway.");
-            localStorage.removeItem('cart'); // Clear cart after checkout
-            displayCart(); // Update cart display
+            localStorage.removeItem('cart');
+            displayCart(); // Update cart display after checkout
             // You can redirect or perform other actions as needed
         }
 
