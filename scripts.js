@@ -2,6 +2,13 @@
 
 function addToCart(itemName, price) {
     let quantity = parseInt(event.target.previousElementSibling.value);
+    
+    // Validate quantity
+    if (quantity <= 0 || isNaN(quantity)) {
+        alert("Please enter a valid quantity.");
+        return;
+    }
+
     for (let i = 0; i < quantity; i++) {
         let cartItem = {
             name: itemName,
@@ -41,6 +48,9 @@ function checkout() {
     localStorage.removeItem('cart');
     displayCart();
 }
+
+// Display cart items when page loads
+displayCart();
 
 // Display cart items when page loads
 displayCart();
